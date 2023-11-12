@@ -1,8 +1,8 @@
 /*
-    GERENCIAMENTO DE ESCALONAMENTO DE ACESSO AO DISCO
+    GERENCIADOR DE ESCALONAMENTO DE ACESSO AO DISCO
 
     Universidade de Passo Fundo (UPF)
-    Sistema Operacionais II
+    Sistemas Operacionais II
     Professor: Marcelo Trindade Rebonatto - Doutor
     Acadêmico: Yeun Haur Kang (193593)
 */
@@ -63,7 +63,7 @@ int main() {
     int posicao_inicial = 88;
     vector<int> requisicoes;
 
-    cout << "===== Gerenciador de Escalonamento de Acesso ao Disco =====" << endl;
+    cout << "\033[1m===== Gerenciador de Escalonamento de Acesso ao Disco =====\033[0m" << endl;
     inserir_vetor(requisicoes);
 
     escalonador_fcfs(requisicoes, posicao_inicial);
@@ -72,6 +72,7 @@ int main() {
     escalonador_cscan(requisicoes, posicao_inicial);
     escalonador_clook(requisicoes, posicao_inicial);
 
+    cout << "\n\033[1m===========================================================\033[0m" << endl;
     return 0;
 }
 
@@ -102,7 +103,7 @@ void exibir_resultado(vector<int>& requisicoes, int posicao_atual, int deslocame
 void escalonador_fcfs(vector<int> requisicoes, int posicao_inicial) {
     int deslocamento = 0;
     exibir_original(requisicoes, posicao_inicial);
-    cout << "\n========== Algoritmo FCFS! ==========" << endl;
+    cout << "\n\033[1m========== Algoritmo FCFS! ==========\033[0m" << endl;
 
     while(requisicoes.size() > 0) {
         int posicao_atual = requisicoes.front();
@@ -111,13 +112,13 @@ void escalonador_fcfs(vector<int> requisicoes, int posicao_inicial) {
         requisicoes.erase(requisicoes.begin());
         exibir_resultado(requisicoes, posicao_atual, deslocamento);
     }
-    cout << "FCFS - Quantidade total de deslocamentos: " << deslocamento << endl;
+    cout << "\033[1;33mFCFS - Quantidade total de deslocamentos: " << deslocamento << "\033[0m" << endl;
 }
 
 void escalonador_sstf(vector<int> requisicoes, int posicao_inicial) {
     int deslocamento = 0;
     exibir_original(requisicoes, posicao_inicial);
-    cout << "\n========== Algoritmo SSTF! ==========" << endl;
+    cout << "\n\033[1m========== Algoritmo SSTF! ==========\033[0m" << endl;
 
     while(requisicoes.size() > 0) {
         int menor_diferenca = 100, indice;
@@ -134,14 +135,14 @@ void escalonador_sstf(vector<int> requisicoes, int posicao_inicial) {
         requisicoes.erase(requisicoes.begin() + indice);
         exibir_resultado(requisicoes, posicao_atual, deslocamento);
     }
-    cout << "SSTF - Quantidade total de deslocamentos: " << deslocamento << endl;
+    cout << "\033[1;33mSSTF - Quantidade total de deslocamentos: " << deslocamento << "\033[0m" << endl;
 }
 
 void escalonador_scan(vector<int> requisicoes, int posicao_inicial) {
     int deslocamento = 0;
     bool fim_trilha = false;
     exibir_original(requisicoes, posicao_inicial);
-    cout << "\n========== Algoritmo Scan (elevador)! ==========" << endl;
+    cout << "\n\033[1m========== Algoritmo Scan (elevador)! ==========\033[0m" << endl;
 
     while(requisicoes.size() > 0) {
         int posicao_atual = 0, indice = 0;
@@ -176,15 +177,14 @@ void escalonador_scan(vector<int> requisicoes, int posicao_inicial) {
         }
         exibir_resultado(requisicoes, posicao_atual, deslocamento);
     }
-    cout << "SCAN - Quantidade total de deslocamentos: " << deslocamento << endl;
+    cout << "\033[1;33mSCAN - Quantidade total de deslocamentos: " << deslocamento << "\033[0m" << endl;
 }
 
-void escalonador_cscan(vector<int> requisicoes, int posicao_inicial)
-{
+void escalonador_cscan(vector<int> requisicoes, int posicao_inicial) {
     int deslocamento = 0;
     vector<int> baixo, alto;
     exibir_original(requisicoes, posicao_inicial);
-    cout << "\n========== Algoritmo Circular SCAN! ==========" << endl;
+    cout << "\n\033[1m========== Algoritmo Circular SCAN! ==========\033[0m" << endl;
 
     for(int i = 0; i < requisicoes.size(); i++) {
         if (requisicoes[i] < posicao_inicial) baixo.push_back(requisicoes[i]);
@@ -207,7 +207,8 @@ void escalonador_cscan(vector<int> requisicoes, int posicao_inicial)
         requisicoes.erase(requisicoes.begin() + j);
         exibir_resultado(requisicoes, posicao_atual, deslocamento);
     }
-    if(!requisicoes.empty()) {
+
+    if(requisicoes.size() > 0) {
         deslocamento += abs(posicao_inicial - 99);
         posicao_inicial = 0;
         if(posicao_inicial != 99) exibir_resultado(requisicoes, 99, deslocamento);
@@ -228,9 +229,48 @@ void escalonador_cscan(vector<int> requisicoes, int posicao_inicial)
         requisicoes.erase(requisicoes.begin() + j);
         exibir_resultado(requisicoes, posicao_atual, deslocamento);
     }
-    cout << "Circular SCAN - Quantidade total de deslocamentos: " << deslocamento << endl;
+    cout << "\033[1;33mCircular SCAN - Quantidade total de deslocamentos: " << deslocamento << "\033[0m" << endl;
 }
 
-void clook(vector<int> requisicoes, int posicao_inicial) {
-    
+void escalonador_clook(vector<int> requisicoes, int posicao_inicial) {
+    int deslocamento = 0, diferenca, posicao_atual;
+    vector<int> baixo, alto;
+    cout << "\n\033[1m========= Algoritmo C-look ==========\033[0m" << endl;
+
+    for(int i = 0; i < requisicoes.size(); i++) {
+        if (requisicoes[i] < posicao_inicial) baixo.push_back(requisicoes[i]);
+        if (requisicoes[i] >= posicao_inicial) alto.push_back(requisicoes[i]);
+    }
+
+    stable_sort(baixo.begin(), baixo.end());
+    stable_sort(alto.begin(), alto.end());
+
+    for(int i = 0; i < alto.size(); i++) {
+        posicao_atual = alto[i];
+        diferenca = abs(posicao_atual - posicao_inicial);
+        deslocamento += diferenca;
+        posicao_inicial = posicao_atual;
+
+        int j = 0;
+        for(j; j < requisicoes.size(); j++) {
+            if(requisicoes[j] == posicao_atual) break;
+        }
+        requisicoes.erase(requisicoes.begin() + j);
+        exibir_resultado(requisicoes, posicao_atual, deslocamento);
+    }
+
+    for(int i = 0; i < baixo.size(); i++) {
+        posicao_atual = baixo[i];
+        diferenca = abs(posicao_atual - posicao_inicial);
+        deslocamento += diferenca;
+        posicao_inicial = posicao_atual;
+
+        int j = 0;
+        for(j; j < requisicoes.size(); j++) {
+            if (requisicoes[j] == posicao_atual) break;
+        }
+        requisicoes.erase(requisicoes.begin() + j);
+        exibir_resultado(requisicoes, posicao_atual, deslocamento);
+    }
+    cout << "\033[1;33mC-look - Quantidade total de deslocamentos: " << deslocamento << "\033[0m" << endl;
 }
