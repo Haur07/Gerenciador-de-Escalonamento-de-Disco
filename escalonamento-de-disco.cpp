@@ -44,7 +44,7 @@ ostream& operator<<(ostream& os, vector<int>& requisicoes) {
 */
 
 // Funções básicas
-void inserir_vetor(vector<int>& requisicoes);
+void inserir_vetor(vector<int>& requisicoes, int& posicao_inicial);
 void exibir_original(const vector<int>& requisicoes, const int posicao_inicial);
 void exibir_resultado(const vector<int>& requisicoes, const int posicao_atual, const int deslocamento);
 
@@ -60,11 +60,11 @@ void escalonador_clook(vector<int> requisicoes, int posicao_inicial);
 */
 
 int main() {
-    int posicao_inicial = 88;
+    int posicao_inicial;
     vector<int> requisicoes;
 
     cout << "\033[1m===== Gerenciador de Escalonamento de Acesso ao Disco =====\033[0m" << endl;
-    inserir_vetor(requisicoes);
+    inserir_vetor(requisicoes, posicao_inicial);
 
     escalonador_fcfs(requisicoes, posicao_inicial);
     escalonador_sstf(requisicoes, posicao_inicial);
@@ -81,12 +81,17 @@ int main() {
 */
 
 // Funções básicas
-void inserir_vetor(vector<int>& requisicoes) {
-    int lista_rebonatto[10] = {30, 70, 54, 59, 29, 64, 87, 38, 5, 40};
+void inserir_vetor(vector<int>& requisicoes, int& posicao_inicial) {
+    int valor_gerado;
+    srand((unsigned) time(NULL));
 
-    for(int i = 0; i < 10; i++) {
-        //int valor_gerado = 1 + (rand() % 99);
-        requisicoes.push_back(lista_rebonatto[i]);
+    for(int i = 0; i < 11; i++) {
+        valor_gerado = 1 + (rand() % 99);
+        if(i < 10) {
+            requisicoes.push_back(valor_gerado);
+        } else {
+            posicao_inicial = valor_gerado;
+        }
     }
 }
 
@@ -235,6 +240,7 @@ void escalonador_cscan(vector<int> requisicoes, int posicao_inicial) {
 void escalonador_clook(vector<int> requisicoes, int posicao_inicial) {
     int deslocamento = 0, diferenca, posicao_atual;
     vector<int> baixo, alto;
+    exibir_original(requisicoes, posicao_inicial);
     cout << "\n\033[1m========= Algoritmo C-look ==========\033[0m" << endl;
 
     for(int i = 0; i < requisicoes.size(); i++) {
