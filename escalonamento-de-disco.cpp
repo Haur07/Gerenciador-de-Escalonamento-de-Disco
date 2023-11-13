@@ -60,7 +60,7 @@ void escalonador_clook(vector<int> requisicoes, int posicao_inicial);
 */
 
 int main() {
-    int posicao_inicial;
+    int posicao_inicial = 88;
     vector<int> requisicoes;
 
     cout << "\033[1m===== Gerenciador de Escalonamento de Acesso ao Disco =====\033[0m" << endl;
@@ -127,7 +127,7 @@ void escalonador_sstf(vector<int> requisicoes, int posicao_inicial) {
 
     while(requisicoes.size() > 0) {
         int menor_diferenca = 100, indice;
-        for(int i = 0; i < requisicoes.size(); i++) {
+        for(size_t i = 0; i < requisicoes.size(); i++) {
             int diferenca = abs(requisicoes[i] - posicao_inicial);
             if(diferenca < menor_diferenca) {
                 menor_diferenca = diferenca;
@@ -153,7 +153,7 @@ void escalonador_scan(vector<int> requisicoes, int posicao_inicial) {
         int posicao_atual = 0, indice = 0;
         bool requisicao_presente = false;
         
-        for(int i = 0; i < requisicoes.size(); i++) {
+        for(size_t i = 0; i < requisicoes.size(); i++) {
             if((requisicoes[i] <= posicao_inicial && !fim_trilha) || (requisicoes[i] >= posicao_inicial && fim_trilha)) {
                 if(!requisicao_presente || (fim_trilha && requisicoes[i] < requisicoes[indice]) || (!fim_trilha && requisicoes[i] > requisicoes[indice])) {
                     indice = i;
@@ -191,7 +191,7 @@ void escalonador_cscan(vector<int> requisicoes, int posicao_inicial) {
     exibir_original(requisicoes, posicao_inicial);
     cout << "\n\033[1m========== Algoritmo Circular SCAN! ==========\033[0m" << endl;
 
-    for(int i = 0; i < requisicoes.size(); i++) {
+    for(size_t i = 0; i < requisicoes.size(); i++) {
         if (requisicoes[i] < posicao_inicial) baixo.push_back(requisicoes[i]);
         if (requisicoes[i] >= posicao_inicial) alto.push_back(requisicoes[i]);
     }
@@ -199,14 +199,14 @@ void escalonador_cscan(vector<int> requisicoes, int posicao_inicial) {
     stable_sort(baixo.begin(), baixo.end());
     stable_sort(alto.begin(), alto.end());
 
-    for(int i = 0; i < alto.size(); i++) {
+    for(size_t i = 0; i < alto.size(); i++) {
         int posicao_atual = alto[i];
         int diferenca = abs(posicao_atual - posicao_inicial);
         deslocamento += diferenca;
         posicao_inicial = posicao_atual;
 
-        int j = 0;
-        for(j; j < requisicoes.size(); j++) {
+        size_t j;
+        for(j = 0; j < requisicoes.size(); j++) {
             if(requisicoes[j] == posicao_atual) break;
         }
         requisicoes.erase(requisicoes.begin() + j);
@@ -221,14 +221,14 @@ void escalonador_cscan(vector<int> requisicoes, int posicao_inicial) {
         exibir_resultado(requisicoes, posicao_inicial, deslocamento);
     }
 
-    for(int i = 0; i < baixo.size(); i++) {
+    for(size_t i = 0; i < baixo.size(); i++) {
         int posicao_atual = baixo[i];
         int diferenca = abs(posicao_atual - posicao_inicial);
         deslocamento += diferenca;
         posicao_inicial = posicao_atual;
 
-        int j = 0;
-        for(j; j < requisicoes.size(); j++) {
+        size_t j;
+        for(j = 0; j < requisicoes.size(); j++) {
             if(requisicoes[j] == posicao_atual) break;
         }
         requisicoes.erase(requisicoes.begin() + j);
@@ -243,7 +243,7 @@ void escalonador_clook(vector<int> requisicoes, int posicao_inicial) {
     exibir_original(requisicoes, posicao_inicial);
     cout << "\n\033[1m========= Algoritmo C-look ==========\033[0m" << endl;
 
-    for(int i = 0; i < requisicoes.size(); i++) {
+    for(size_t i = 0; i < requisicoes.size(); i++) {
         if (requisicoes[i] < posicao_inicial) baixo.push_back(requisicoes[i]);
         if (requisicoes[i] >= posicao_inicial) alto.push_back(requisicoes[i]);
     }
@@ -251,28 +251,28 @@ void escalonador_clook(vector<int> requisicoes, int posicao_inicial) {
     stable_sort(baixo.begin(), baixo.end());
     stable_sort(alto.begin(), alto.end());
 
-    for(int i = 0; i < alto.size(); i++) {
+    for(size_t i = 0; i < alto.size(); i++) {
         posicao_atual = alto[i];
         diferenca = abs(posicao_atual - posicao_inicial);
         deslocamento += diferenca;
         posicao_inicial = posicao_atual;
 
-        int j = 0;
-        for(j; j < requisicoes.size(); j++) {
+        size_t j = 0;
+        for(j = 0; j < requisicoes.size(); j++) {
             if(requisicoes[j] == posicao_atual) break;
         }
         requisicoes.erase(requisicoes.begin() + j);
         exibir_resultado(requisicoes, posicao_atual, deslocamento);
     }
 
-    for(int i = 0; i < baixo.size(); i++) {
+    for(size_t i = 0; i < baixo.size(); i++) {
         posicao_atual = baixo[i];
         diferenca = abs(posicao_atual - posicao_inicial);
         deslocamento += diferenca;
         posicao_inicial = posicao_atual;
 
-        int j = 0;
-        for(j; j < requisicoes.size(); j++) {
+        size_t j;
+        for(j = 0; j < requisicoes.size(); j++) {
             if (requisicoes[j] == posicao_atual) break;
         }
         requisicoes.erase(requisicoes.begin() + j);
