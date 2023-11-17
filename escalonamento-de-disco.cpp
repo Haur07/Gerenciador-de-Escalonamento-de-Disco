@@ -60,7 +60,7 @@ void escalonador_clook(vector<int> requisicoes, int posicao_inicial);
 */
 
 int main() {
-    int posicao_inicial = 88;
+    int posicao_inicial;
     vector<int> requisicoes;
 
     cout << "\033[1m===== Gerenciador de Escalonamento de Acesso ao Disco =====\033[0m" << endl;
