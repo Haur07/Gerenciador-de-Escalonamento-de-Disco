@@ -5,7 +5,7 @@ Professor: Marcelo Trindade Rebonatto - Doutor
 Acadêmico: Yeun Haur Kang (193593)  
 
 # Instruções de Execução
-É altamente recomendado a utilização do sistema operacional Linux
+É altamente recomendado a utilização do sistema operacional Linux  
 Em caso de Windows (não recomendado), utilizar Subsistema do Windows para Linux (WSL) ou similar 
 
 - Entre na pasta onde está localizado o arquivo  
